@@ -19,6 +19,10 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
 		$_SESSION['user_id'] = $result['id'];
 		$_SESSION['role_id'] = $result['role_id'];
 
+		$user_info = $db->getUserInformation($result['id']);
+
+		$_SESSION['full_name'] = $user_info['fname']." ".$user_info['lname'];
+
 		if ($result['role_id'] == 4) {
 			header('Location: ../../doctor_dashboard.php');
 		}
