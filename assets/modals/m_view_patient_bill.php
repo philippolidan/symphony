@@ -6,13 +6,15 @@
 			<div class="modal-body" style="background-color: #fbfbfb;">
 				<div class="row p-2">
 
+					<input type="hidden" class="d-none" name="bill_checker" value="0">
+					<input type="hidden" class="d-none" name="er_id" value="0">
 					<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 mb-2">
 						<div class="d-flex">
 							<div>
 								<h4 class="text-dark">Invoice</h4>
 							</div>
 							<div class="ml-auto">
-								<button class="btn btn-warning btn-sm mr-2" title="Print" onclick="print_button()"><i class="fa fa-print"></i></button>
+								<button class="btn btn-warning btn-sm mr-2 d-none" title="Print" onclick="print_button()" id="print"><i class="fa fa-print"></i></button>
 								<button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" aria-label="Close" title="Close">
 									<i class="fa fa-times"></i>
 								</button>
@@ -104,7 +106,7 @@
 
 								<div class="row"><hr>
 									<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12" id="table_div">
-										<table id="billing_table" class="hover table-striped table-bordered" style="width: 100%">
+										<table id="billing_table1" class="hover table-striped table-bordered" style="width: 100%">
 											<thead>
 												<tr>
 													<th>Particulars</th>
@@ -131,8 +133,9 @@
 											</div>
 
 											<div class="ml-auto" style="text-align: right">
-												<input type="text" class="form-control form-control-sm text-right" name="discount" value="0.00">
 												<p class="billing-patient-details font-weight-bold" id="subtotal">0.00</p>
+												<input type="text" class="form-control form-control-sm text-right" name="discount" value="0.00">
+												<p class="billing-patient-details font-weight-bold d-none" id="p-discount"></p>
 												<p class="billing-patient-details font-weight-bold" id="total">0.00</p>
 											</div>
 
@@ -147,12 +150,109 @@
 
 				</div>
 			</div>
-
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" onclick="bill()" id="submit">Submit</button>
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			</div>
 		</div>
 	</div>
 </div>
-
+<style type="text/css">
+	.ui-pnotify-action-button{
+		cursor:pointer;
+	}
+</style>
 <script type="text/javascript">
+	$('#billing_table1').DataTable({
+		"paging":   false,
+		"ordering": false,
+		"info":     false,
+		"searching":false,
+		responsive: true,
+		"language": {
+			"emptyTable": "Empty"
+		}
+	});
+	$('#m_view_patient_bill').on('hidden.bs.modal', function () {
+		$("input[name='discount'").removeClass('d-none');
+		$("#p-discount").addClass('d-none');
+		$("#submit").removeClass("d-none");
+		$("#print").addClass("d-none");
+	});
+	function bill(){
+		var checker = $("input[name='bill_checker']").val();
+		if(checker == "0"){
+			(new PNotify({
+				title: 'Confirmation Needed',
+				text: 'Are you sure?',
+				icon: 'glyphicon glyphicon-question-sign',
+				hide: false,
+				confirm: {
+					confirm: true
+				},
+				buttons: {
+					closer: false,
+					sticker: false
+				},
+				history: {
+					history: false
+				},
+				addclass: 'stack-modal',
+				stack: {'dir1': 'down', 'dir2': 'right', 'modal': true}
+			})).get().on('pnotify.confirm', function(){
+				var c = 0;
+				var subtotal = $("#subtotal").text();
+				var discount = $("input[name='discount']").val();
+				var total = $("#total").text();
+				var er_id = $("input[name='er_id']").val();
+				var table = $("#billing_table1").DataTable();
+				var data = table.rows().data();
+				console.log(total);
+				$.ajax({
+					url:"assets/includes/class_handler.php",
+					type: "POST",
+					data: {id:9,subtotal:subtotal,discount:discount,total:total,er_id:er_id},
+					success: function(data){
+						console.log(data);
+						if(data == 1){
+							$("input[name='bill_checker']").val(1);
+							print_button("confirm");
+							$("#submit").addClass("d-none");
+							$("#print").removeClass("d-none");
+						}
+					}
+				});
+			}).on('pnotify.cancel', function(){
+			});
+
+		}
+		else{
+			print_button("confirm");
+		}
+		
+	}
+	function calculate(){
+		var subtotal = 0.00;
+		var discount = $("input[name='discount']").val();
+		$("#p-discount").text(parseFloat(discount).toFixed(2));
+		$('#billing_table1 tr').each(function() {
+			var st = parseFloat($(this).find("td").eq(1).html());
+			if(isNaN(st))
+				st = 0.00;
+			subtotal = subtotal + st;
+			var amnt = st - parseFloat(discount);
+			$(this).find("td").eq(3).html(amnt.toFixed(2))
+		});
+		$("#subtotal").text(parseFloat(subtotal).toFixed(2));
+		//$("#input[name='discount']").text(parseFloat(discount).toFixed(2));
+		var total = subtotal - discount;
+		console.log(total);
+		$("#total").text(parseFloat(total).toFixed(2));
+	}
+	$("input[name='discount']").on("change", function() {
+		console.log($(this).val());
+		calculate();
+	});
 	function print_button(modal) {
 		$("#"+modal).modal("hide");
 		$("input[name='discount']").addClass("d-none");

@@ -1,17 +1,14 @@
-<?php
-include('assets/includes/db_connect.php'); 
+<?php include('assets/parts/header.php'); 
 $db = new Database;
-$symptom_list = [];
-$er_id = "5bab24cdb8dde1284800019e";
-$symptom_id = '5';
-$symp = [];
-foreach($db->getSymptomEr($er_id) as $ser){
-	foreach($db->getSymptomQuestion((string)$ser->_id,$symptom_id) as $sq){
-		foreach($sq->question_list as $q){
-			if($q->symptom_id == $symptom_id)
-				$symp[] = [$q->question => $sq->answer];
-		}
+$er_id = "5bab3ab0b8dde128480001a9";
+$bill = [];
+foreach($db->getBill($er_id) as $bill){
+	$bill_itemss = [];
+	foreach($bill->bill_items as $bill_items){
+		$bill_itemss[] =[$bill_items->name,$bill_items->price];
 	}
+	$bill = [$bill->total,$bill->discount,$bill->subtotal,$bill_itemss];
 }
-echo json_encode($symp);
+
+echo json_encode($bill);
 ?>

@@ -113,6 +113,9 @@ class Database
 	public function getLabTest($id){
 		return $this->db->lab_test->find(['_id' => new MongoDB\BSON\ObjectId($id)]);
 	}
+	public function getBill($er_id){
+		return $this->db->bill->find(['er_id' => $er_id]);
+	}
 	// public function getLabTestByPatient($patient_oid){
 	// 	$patient_oid1 = new MongoDB\BSON\ObjectId($patient_oid);
 	// 	return $this->db->lab_test->aggregate( 
@@ -153,8 +156,8 @@ class Database
 	public function getCountPendingByER($er_id){
 		return $this->db->lab_test->count([ "er_id" => $er_id ,"status" => "done"]);
 	}
-	public function getER($patient_oid){
-		return $this->db->er_transaction->find(['patient_oid' => $patient_oid]);
+	public function getER($er_id){
+		return $this->db->er_transaction->find(['_id' => new MongoDB\BSON\ObjectId($er_id)]);
 	}
 	public function getERById($er_id){
 		return $this->db->er_transaction->find(['_id' => new MongoDB\BSON\ObjectId($er_id)]);
@@ -334,8 +337,8 @@ class Database
 			else{
 				$number = count(iterator_to_array($this->db->patient->find()));
 				$patient_no = $this->getPatientNumber();
-				$patient_no = explode("PN-",$patient_no);
-				$patient_id = $patient_no[1];
+				$patient_no1 = explode("PN-",$patient_no);
+				$patient_id = $patient_no1[1];
 			//insert patient
 				$patient = 
 				[
@@ -755,34 +758,42 @@ class Database
 			$update = $this->db->er_transaction->updateOne( 
 				['_id' => new MongoDB\BSON\ObjectId($data['er_id'])], 
 				['$set' => 
-					['status' => "Discharged",'date_completed' => $date_completed]
+					['status' => "Paid",'date_completed' => $date_completed]
+				]
+			);
+			$update = $this->db->bed_list->updateOne( 
+				['bed_no' => $er->bed_no], 
+				['$set' => 
+					['status' => "Vacant"]
 				]
 			);
 			$lab_test =$this->getLabTestByER((string)$er->_id);
+			$bill_items = [];
+			$bill_items[] = ["name"=>"Physician's Fee", "price" => "1000"];
 			foreach ($lab_test as $lab) {
-				$patient_oid = $lab->patient_oid;
-				$er_transaction = $this->getER($patient_oid);
-				foreach ($er_transaction as $er) {
-					$update = $this->db->bed_list->updateOne( 
-						['bed_no' => $er->bed_no], 
-						['$set' => 
-							['status' => "Vacant"]
-						]
-					);
+				foreach($lab->test_list as $test){
+					$bill_items[] =["name"=>$test->name, "price" => $test->price];
 				}
 			}
 			$bill = 
 			[
 				"er_id" => (string)$er->_id, "subtotal" => $data['subtotal'],
 				"discount" => $data['discount'], "total" => $data['total'],
-				"date" => $date_completed
+				"date" => $date_completed,"bill_items" => $bill_items
 			];
-			$result = $this->db->bill->insertOne($bill);
-
+			$result_bill = $this->db->bill->insertOne($bill);
+			// $bill_id = (string) $result_bill->getInsertedId();
+			// $lab_test =$this->getLabTestByER((string)$er->_id);
+			// $bill_items = [];
+			// $bill_items[] = ["bill_id" => $bill_id, "name"=>"Physician's Fee", "price" => "1000"];
+			// foreach ($lab_test as $lab) {
+			// 	foreach($lab->test_list as $test){
+			// 		$bill_items[] =["bill_id" => $bill_id, "name"=>$test->name, "price" => $test->price];
+			// 	}
+			// }
+			//$result_bill = $this->db->bill_items->insertMany($bill_items);
 		}
-		foreach($this->getPatient($data['patient_oid']) as $patient){
-			return array(true,$patient->contact);
-		}
+		return true;
 	}
 	public function loginUser($email, $password){
 		$result = $this->db->users->findOne(array("email" => $email, "salt" => $password));

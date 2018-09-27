@@ -335,6 +335,7 @@ if(isset($_POST['id'])){
 			$discharge_date = date("F d, Y h:i A");
 			$bed_no = "";
 			$ward_no = "";
+			$bill = [];
 			if(isset($er->admission_date) && isset($er->bed_no) && isset($er->ward_no)){
 				$admission_date = $er->admission_date;
 				$bed_no = $er->bed_no;
@@ -353,18 +354,27 @@ if(isset($_POST['id'])){
 				$patient_name = $patient->lname.", ".$patient->fname." ".$patient->mname;
 				$patient_address = $patient->address;
 			}
-			echo json_encode(array($patient_name,$patient_address,$assessment_date,$admission_date,$discharge_date,$bed_no,$ward_no,$emergency_code,$lab_test1));
+			if($er->status =='Paid'){
+				foreach($db->getBill((string)$er->_id) as $bill){
+					$bill_itemss = [];
+					foreach($bill->bill_items as $bill_items){
+						$bill_itemss[] =[$bill_items->name,$bill_items->price];
+					}
+					$bill = [$bill->total,$bill->discount,$bill->subtotal,$bill_itemss];
+				}
+			}
+			echo json_encode(array($patient_name,$patient_address,$assessment_date,$admission_date,$discharge_date,$bed_no,$ward_no,$emergency_code,$lab_test1,$bill));
 		}
 	}
 	else if($id == 9){// insert bill
 		$result = $db->bill($_POST);
-		if($result[0]){
+		if($result){
 			// $c =count($result[2]);
 			// $status ="";
 			// for($i = 0; $i<$c;$i++){
 			// 	$status= $sms->sendSMS_orderSuccessful($result[1],$result[2][$i]);
 			// }
-			echo true;
+			echo $result;
 		}
 	}
 	else if($id == 10){

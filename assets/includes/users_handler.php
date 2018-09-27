@@ -35,6 +35,9 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
 		if ($result['role_id'] == 8) {
 			header('Location: ../../evaluator_dashboard.php');
 		}
+		if ($result['role_id'] == 9) {
+			header('Location: ../../billing_dashboard.php');
+		}
 		
 	}
 
