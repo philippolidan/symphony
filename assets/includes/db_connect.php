@@ -339,7 +339,24 @@ class Database
 				$patient_no = $this->getPatientNumber();
 				$patient_no1 = explode("PN-",$patient_no);
 				$patient_id = $patient_no1[1];
-			//insert patient
+
+				$salt = hash("sha512", "123456");
+				$password = hash("sha512", $salt);
+				$created_date = date("Y-m-d H:i:s");
+
+				//insert users
+				$user = 
+				[
+					"patient_id" => $patient_no,
+					"password" => $password,
+					"salt" => $salt,
+					"role_id" => "5",
+					"created_date" => $created_date
+				];
+
+				$this->db->users->insertOne($user);
+
+				//insert patient
 				$patient = 
 				[
 					"patient_id" => $patient_id, "lname"=> $data['lname'], "fname" => $data['fname'],
@@ -796,7 +813,7 @@ class Database
 		return true;
 	}
 	public function loginUser($email, $password){
-		$result = $this->db->users->findOne(array("email" => $email, "salt" => $password));
+		$result = $this->db->users->findOne(array("patient_id" => $email, "salt" => $password));
 		return $result;
 	}
 	public function loginUserById($user_id){
@@ -827,8 +844,8 @@ class Database
 		return true;
 	}
 
-	public function getUserInformation($user_id){
-		return $this->db->users_information->findOne(["user_id" => $user_id]);
+	public function getPatientInformation($patient_id){
+		return $this->db->patient->findOne(["patient_id" => $patient_id]);
 	}
 }
 ?>
