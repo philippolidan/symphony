@@ -259,19 +259,19 @@ $db = new Database;
 			}]
 		});
 		$('#m_add_evaluation').on('hidden.bs.modal', function () {
-		// $("#patient_overview").animate({
-		// 	opacity: 1,
-		// 	center: "+=50",
-		// 	height: "toggle"
-		// }, 200, function(){
-		// });
-		$("#evaluation_part").show();
-		$("#patient_overview").css({"opacity":"1"});
-		$("#test_body").empty();
-		$("#symptom_body").empty();
-		$("#lab_result").hide();
-		$("#symptoms").hide();
-	});
+			// $("#patient_overview").animate({
+			// 	opacity: 1,
+			// 	center: "+=50",
+			// 	height: "toggle"
+			// }, 200, function(){
+			// });
+			$("#evaluation_part").show();
+			$("#patient_overview").css({"opacity":"1"});
+			$("#test_body").empty();
+			$("#symptom_body").empty();
+			$("#lab_result").hide();
+			$("#symptoms").hide();
+		});
 		$(".view-lab-result").on("click", function(){
 			$("#lab_result").animate({
 				opacity: 1,
