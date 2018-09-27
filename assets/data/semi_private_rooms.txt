@@ -1,0 +1,124 @@
+{
+  "data": [
+    [
+      "Room 411",
+      "Fourth Floor",
+      "₱ 900.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 411 - Fourth Floor (Semi Private)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 412",
+      "Fourth Floor",
+      "₱ 900.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 412 - Fourth Floor (Semi Private)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 413",
+      "Fourth Floor",
+      "₱ 900.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 413 - Fourth Floor (Semi Private)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 414",
+      "Fourth Floor",
+      "₱ 900.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 414 - Fourth Floor (Semi Private)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 415",
+      "Fourth Floor",
+      "₱ 900.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 415 - Fourth Floor (Semi Private)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 416",
+      "Fourth Floor",
+      "₱ 900.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 416 - Fourth Floor (Semi Private)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 417",
+      "Fourth Floor",
+      "₱ 900.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 417 - Fourth Floor (Semi Private)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 418",
+      "Fourth Floor",
+      "₱ 900.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 418 - Fourth Floor (Semi Private)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 419",
+      "Fourth Floor",
+      "₱ 900.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 419 - Fourth Floor (Semi Private)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 320",
+      "Third Floor",
+      "₱ 750.00"
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 320 - Third Floor (Semi Private)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 321",
+      "Third Floor",
+      "₱ 750.00"
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 321 - Third Floor (Semi Private)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 322",
+      "Third Floor",
+      "₱ 750.00"
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 322 - Third Floor (Semi Private)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 323",
+      "Third Floor",
+      "₱ 750.00"
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 323 - Third Floor (Semi Private)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 324",
+      "Third Floor",
+      "₱ 750.00"
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 324 - Third Floor (Semi Private)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 325",
+      "Third Floor",
+      "₱ 750.00"
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 325 - Third Floor (Semi Private)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 326",
+      "Third Floor",
+      "₱ 750.00"
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 326 - Third Floor (Semi Private)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 327",
+      "Third Floor",
+      "₱ 750.00"
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 327 - Third Floor (Semi Private)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 328",
+      "Third Floor",
+      "₱ 750.00"
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 328 - Third Floor (Semi Private)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 329",
+      "Third Floor",
+      "₱ 750.00"
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 329 - Third Floor (Semi Private)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 330",
+      "Third Floor",
+      "₱ 750.00"
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 330 - Third Floor (Semi Private)'><i class='fa fa-check'></i></button>"
+    ]
+  ]
+}

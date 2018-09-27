@@ -17,23 +17,12 @@ $url = $_SERVER['REQUEST_URI'];
 			</a>
 		</li>
 
-		<li>
-			<a href="#medicalJournal" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+		<!-- <li>
+			<a href="#">
 				<i class="fas fa-copy"></i>
 				Medical Journal
 			</a>
-			<ul class="collapse list-unstyled" id="medicalJournal">
-				<li>
-					<a href="#">Page 1</a>
-				</li>
-				<li>
-					<a href="#">Page 2</a>
-				</li>
-				<li>
-					<a href="#">Page 3</a>
-				</li>
-			</ul>
-		</li>
+		</li> -->
 
 	</ul>
 
