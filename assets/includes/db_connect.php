@@ -826,5 +826,9 @@ class Database
 		]);
 		return true;
 	}
+
+	public function getUserInformation($user_id){
+		return $this->db->users_information->findOne(["user_id" => $user_id]);
+	}
 }
 ?>
