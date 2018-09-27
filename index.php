@@ -70,7 +70,7 @@ if(isset($_SESSION['user_id'])){
 		<form id="login_form" method="POST" action="assets/includes/users_handler.php">
 			<div class="form-label-group">
 				<input type="text" id="inputEmail" class="form-control" placeholder="Email address" required autofocus name="patient_id">
-				<label for="inputEmail" class="font-weight-bold">Patient ID</label>
+				<label for="inputEmail" class="font-weight-bold">ID</label>
 			</div>
 
 			<div class="form-label-group">
