@@ -45,4 +45,7 @@
 			$('#sidebar').toggleClass('active');
 		});
 	});
+	function notification(){
+		
+	}
 </script>

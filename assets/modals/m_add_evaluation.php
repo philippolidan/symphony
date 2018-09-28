@@ -273,6 +273,8 @@ $db = new Database;
 			$("#admit").removeClass("d-none");
 			$("#discharge").removeClass("d-none");
 			var table = $("#prescription_table").DataTable();
+			var col = table.column(4);
+			col.visible( true);
 			table.clear().draw();
 			$("#lab_test").empty();
 			$("textarea[name='dietary']").val("");
@@ -280,6 +282,7 @@ $db = new Database;
 			$("#symptom_list").empty();
 			$("#evaluation_part").show();
 			$("#patient_overview").css({"opacity":"1"});
+			$("#evaluation_part").css({"opacity":"1"});
 			$("#test_body").empty();
 			$("#symptom_body").empty();
 			$("#lab_result").hide();
@@ -383,6 +386,12 @@ $db = new Database;
     	}
 	});
 	$("#discharge").on("click",function(){
+		submit("Discharged");
+	});
+	$("#admit").on("click",function(){
+		submit("Admitted");
+	});
+	function submit(status){
 		var table = $("#prescription_table").DataTable();
 		var data_count = table.rows().data().count();
 		if(data_count > 0){
@@ -400,7 +409,7 @@ $db = new Database;
 			form_data.push({name:"plan" , value: plan});
 			form_data.push({name:"id" , value: 19});
 			form_data.push({name:"er_id" , value: er_id});
-			form_data.push({name:"status" , value: "Discharged"});
+			form_data.push({name:"status" , value: status});
 			$.ajax({
 				url:"assets/includes/class_handler.php",
 				type:"POST",
@@ -432,7 +441,7 @@ $db = new Database;
 				delay: 2000
 			});
 		}
-	});
+	}
 	$(".to-v").on('change',function(){
 		if($(this).hasClass("select2")){
 			$(this).parent().children().children().children().removeClass("required-field");

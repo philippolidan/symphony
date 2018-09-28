@@ -61,7 +61,9 @@
 	});
 	$('<div class="float-right col-lg-2 col-md-6">' +
 		'<select class="form-control" id="bill_type">'+
+		'<option value="All">All</option>'+
 		'<option value="Discharged">Discharged</option>'+
+		'<option value="Admitted">Admitted</option>'+
 		'<option value="Paid">Paid</option>'+
 		'</select>' + 
 		'</div>').appendTo("#billing_table_wrapper .dataTables_filter");
@@ -78,11 +80,12 @@
 		$.ajax({
 			url:"assets/includes/class_handler.php",
 			type:"POST",
-			data: {id:17,tcount:tcount,status:t},
+			data: {id:17,tcount:tcount,status:t,type:1},
 			success:function(data){
 				if(data == true){
 					updateTable();
 				}
+				console.log(true);
 			}
 		});
 		setTimeout(check,2000);
@@ -92,7 +95,7 @@
 		$.ajax({
 			url:"assets/includes/class_handler.php",
 			type:"POST",
-			data: {id:18,status:t},
+			data: {id:18,status:t,type:1},
 			success:function(data){
 				var table = $('#billing_table').DataTable();
 				var data = JSON.parse(data);

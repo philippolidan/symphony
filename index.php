@@ -38,9 +38,8 @@ if(isset($_SESSION['user_id'])){
 <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 mt-4 mb-4">
 	<div class="form-signin mt-4 bg-white">
 		<div class="text-center mb-4">
-			<img class="mb-4" src="assets/img/icons/pharmacy.svg" alt="" width="72" height="72">
-			<h1 class="h3 mb-1 font-weight-bold">ALPAX</h1>
-			<h6>Hospital & Medical Center</h6>
+			<img class="mb-4 img-fluid" src="assets/img/icons/symphony icon text.svg" alt="" width="300">
+			
 			<hr>
 			<p id="login_text" class="text-warning font-weight-bold">
 				

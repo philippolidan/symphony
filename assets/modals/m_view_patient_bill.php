@@ -127,8 +127,8 @@
 										<div class="d-flex">
 
 											<div>
-												<p class="billing-patient-details font-weight-bold">Discount</p>
 												<p class="billing-patient-details font-weight-bold">Subtotal</p>
+												<p class="billing-patient-details font-weight-bold">Discount</p>
 												<p class="billing-patient-details font-weight-bold">Total Bill</p>
 											</div>
 
@@ -234,6 +234,8 @@
 	function calculate(){
 		var subtotal = 0.00;
 		var discount = $("input[name='discount']").val();
+		if(isNaN(discount))
+			discount = 0.00;
 		$("#p-discount").text(parseFloat(discount).toFixed(2));
 		$('#billing_table1 tr').each(function() {
 			var st = parseFloat($(this).find("td").eq(1).html());
