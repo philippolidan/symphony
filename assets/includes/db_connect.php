@@ -871,12 +871,20 @@ class Database
 		return true;
 	}
 
+	public function getERTransaction($patient_id){
+		return $this->db->er_transaction->find(["patient_id" => $patient_id]);
+	}
+
 	public function getPatientInformation($patient_id){
 		return $this->db->patient->findOne(["patient_id" => $patient_id]);
 	}
 
-	public function getUserInformation($user_id){
+	public function getERTransactionDetails($er_no){
+		return $this->db->er_transaction->find(["er_no" => $er_no]);
+	}
 
+	public function getPatientOID($patient_id){
+		return $this->db->patient->findOne([ "user_id" => $patient_id ]);
 	}
 }
 ?>

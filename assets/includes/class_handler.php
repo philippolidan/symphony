@@ -417,25 +417,25 @@ if(isset($_POST['id'])){
 				$hasmedication = $triage->hasmedication;
 				$medications = $triage->medications;
 			}
-	//get labtests
+			//get labtests
 			$items = [];
 			if(!isset($_POST['status'])){
 				foreach($db->getLabTestByER($_POST['er_id']) as $lab_test){
 					$vtest= "<div class='row border-bottom mt-1 mb-1'>";
 					foreach($db->getTest($lab_test->test_id) as $ltest){
-						$vtest.="<div class='col-lg-4'><h6 class='small'>".$ltest->name."</h6></div>";
+						$vtest.="<div class='col-xs-4 col-md-4'><h6 class='small'>".$ltest->name."</h6></div>";
 					}
-					$vtest.="<div class='col-lg-4'>
+					$vtest.="<div class='col-xs-4 col-md-4'>
 					<h6 class='small font-weight-bold'>".$lab_test->status."</h6>
 					</div>
-					<div class='col-lg-4'>
+					<div class='col-xs-4 col-md-4'>
 					<a href='#' onclick='view_test(\"".$lab_test->_id."\",\"".$ltest->name."\")' class='text-info font-weight-bold float-right'>View</a>
 					</div></div>";
 					$test[] = $vtest;
 				}
 				foreach($db->getSymptomEr($_POST['er_id']) as $squestion){
-					$s = "";
 					foreach($squestion->symptom_ids as $id){
+						$s = "";
 						$s .= "<div class='d-flex border-bottom mt-1 mb-1'>";
 						$n = "";
 						foreach($db->getSymptom($id) as $symp){
