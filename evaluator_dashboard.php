@@ -152,6 +152,7 @@
 						$("#lab_test").append(data[12][i]);
 					}
 				}
+				
 				for(var i = 0; i<data[13].length;i++){
 					$("#symptom_list").append(data[13][i]);
 				}
