@@ -15,14 +15,16 @@ if (isset($_POST['id']) && isset($_POST['password'])) {
 		json_encode($result);
 
 		session_start();
-		
-		$_SESSION['user_id'] = $result['id'];
+
+		$_SESSION['user_id'] = $result['user_id'];
 		$_SESSION['role_id'] = $result['role_id'];
+		$_SESSION['id'] = $result['id'];
 
 		if ($result['role_id'] == 5) {
 			$p_id = explode("PN-", $result['id']);
 			$user_info = $db->getPatientInformation($p_id[1]);
 
+			$_SESSION['patient_oid'] = $user_info['_id'];
 			$_SESSION['full_name'] = $user_info['lname'].", ".$user_info['fname'];
 		}
 
