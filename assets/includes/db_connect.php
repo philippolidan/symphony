@@ -9,10 +9,12 @@ class Database
 	}
 	public function getPatientNumber(){
 		// $number = count(iterator_to_array($this->db->er_transaction->find()));
+		$pn = "PN-00001";
 		foreach($this->db->patient->aggregate([['$sort' => ['patient_id' => -1]]]) as $patient){
 			$number = $patient->patient_id;
-			return "PN-".str_pad($number + 1, 5, 0, STR_PAD_LEFT);
+			$pn = "PN-".str_pad($number + 1, 5, 0, STR_PAD_LEFT);
 		}
+		return $pn;
 	}
 	public function getMedicines(){
 		return $this->db->medicine->find();
@@ -79,6 +81,9 @@ class Database
 	}
 	public function getECG($labtest_id){
 		return $this->db->ecg->find(['labtest_id' => "$labtest_id"]);
+	}
+	public function getEvaluation($er_id){
+		return $this->db->evaluation->find(['er_id' => "$er_id"]);
 	}
 	public function getFBSugar($labtest_id){
 		return $this->db->fbsugar->find(['labtest_id' => "$labtest_id"]);
@@ -161,6 +166,10 @@ class Database
 	}
 	public function getERById($er_id){
 		return $this->db->er_transaction->find(['_id' => new MongoDB\BSON\ObjectId($er_id)]);
+	}
+	public function getERByIdStatus($er_id,$status){
+		return $this->db->er_transaction->find([ '$and' => [['_id' =>new MongoDB\BSON\ObjectId($er_id)],['status' => $status]]]);
+		// [['_id' => new MongoDB\BSON\ObjectId($er_id),"status" => $status]]
 	}
 	public function getERS($status = null){
 		if($status == null)
@@ -322,7 +331,6 @@ class Database
 	public function insert_one($data){
 		try{
 			//get patient id
-
 			$number1 = count(iterator_to_array($this->db->er_transaction->find()));
 			$er_no = str_pad($number1 + 1, 5, 0, STR_PAD_LEFT);
 			if($data["patient_type"] == "existing"){
@@ -822,20 +830,18 @@ class Database
 	}
 	public function evaluation($data){
 		$date_completed = date("m/d/Y H:i:s");
+		$prescription=[];
+		$pres = json_decode(stripslashes($data['prescription']));
+		$c = count($pres);
+		for($i = 0; $i<$c; $i++){
+			$prescription[] = ["medicine_name" =>$pres[$i][0],"dosage" => $pres[$i][1], "frequency" => $pres[$i][2]];
+		}
 		$evaluation = 
 		[
-			"er_id" => $data['er_id'], "dietary_plan" => $data['plan']
+			"er_id" => $data['er_id'], "dietary_plan" => $data['plan'],"evaluation_items" => $prescription
 		];
 
 		$result_evaluation = $this->db->evaluation->insertOne($evaluation);
-		$evaluation_id = (string) $result_evaluation->getInsertedId();
-		$pres = json_decode(stripslashes($data['prescription']));
-		$c = count($pres);
-		$prescription=[];
-		for($i = 0; $i<$c; $i++){
-			$prescription[] = ["evaluation_id" => $evaluation_id,"medicine_id" =>$pres[$i][0],"dosage" => $pres[$i][1], "frequency" => $pres[$i][2]];
-		}
-		$result_prescription = $this->db->evaluation_items->insertMany($prescription);
 		$update = $this->db->er_transaction->updateOne( 
 			['_id' => new MongoDB\BSON\ObjectId($data['er_id'])], 
 			['$set' => 
