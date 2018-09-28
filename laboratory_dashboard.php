@@ -75,7 +75,17 @@ $db = new Database;
 		"language": {
 			"emptyTable": "No Available Lab Test Request"
 		},
-		"order": [[ 4, "desc" ]]
+		"order": [[ 5, "desc" ]]
+	});
+	$('<div class="float-right col-lg-2 col-md-6">' +
+		'<select class="form-control" id="er_status">'+
+		'<option value="pending">Pending</option>'+
+		'<option value="Done">Done</option>'+
+		'</select>' + 
+		'</div>').appendTo("#lab_test_table_wrapper .dataTables_filter");
+	$(".dataTables_filter label").addClass("pull-right");
+	$("#er_status").on('change',function(){
+		updateTable();
 	});
 	updateTable();
 	check();
@@ -96,18 +106,21 @@ $db = new Database;
 		setTimeout(check,2000);
 	}
 	function updateTable(){
+		var t = $("#er_status option:selected").val();
 		$.ajax({
 			url:"assets/includes/class_handler.php",
 			type:"POST",
-			data: {id:15,type:1},
+			data: {id:15,type:1,status:t},
 			success:function(data){
 				var table = $('#lab_test_table').DataTable();
 				var data = JSON.parse(data);
 				table.clear().draw();
-				data.forEach(function(d){
-					button = "<button class='btn btn-primary btn-sm' data-target='m_input_test_result' data-erid ='"+d[6]+"' data-pid='"+d[0]+"' data-id ='"+d[5]+"' data-type ='"+d[3]+"' onclick='open_modal(this)' type='button' value='"+d[5]+"'><i class='fas fa-eye'></i></button>";
-					table.row.add([d[0],d[7],d[1],d[2],d[3],d[4],button]).draw(false);
-				});
+				if(data != null){
+					data.forEach(function(d){
+						button = "<button class='btn btn-primary btn-sm' data-target='m_input_test_result' data-erid ='"+d[6]+"' data-pid='"+d[0]+"' data-id ='"+d[5]+"' data-type ='"+d[3]+"' onclick='open_modal(this)' type='button' value='"+d[5]+"'><i class='fas fa-eye'></i></button>";
+						table.row.add([d[0],d[7],d[1],d[2],d[3],d[4].toUpperCase(),button]).draw(false);
+					});
+				}
 			}
 		});
 	}

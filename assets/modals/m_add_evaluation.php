@@ -48,6 +48,9 @@ $db = new Database;
 													</div>
 													<span class="d-block" id="p_id">Patient No: ALPX-3829</span>
 													<span class="d-block" id="birthdate">July 23, 1997</span>
+													<div class="d-flex justify-content-between align-items-center w-100">
+														<strong class="text-dark" id="status"></strong>
+													</div>
 												</div>
 											</div>
 										</div>
@@ -82,7 +85,7 @@ $db = new Database;
 													<h6 class="bg-info small text-light p-2">Laboratory Results</h6>
 
 													<ul class="list-group mb-3" id="lab_test">
-
+														
 														
 													</ul>
 												</div>
@@ -96,8 +99,7 @@ $db = new Database;
 												<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
 													<h6 class="bg-info small text-light p-2">Prescription</h6>
 												</div>
-
-												<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+												<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 to-h">
 													<select name='medicine_name' class="select2 to-v" style="width: 100%;">
 														<option disabled selected value>Select Medicine</option>
 														<?php
@@ -108,15 +110,15 @@ $db = new Database;
 													</select>
 												</div>
 
-												<div class="col-lg-2 col-md-2 col-xs-2 col-sm-2">
+												<div class="col-lg-2 col-md-2 col-xs-2 col-sm-2 to-h">
 													<input type="text" class="form-control to-v" name="dosage" placeholder="Dosage">
 												</div>
 
-												<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+												<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 to-h">
 													<input type="text" class="form-control to-v" name="frequency" placeholder="Frequency">
 												</div>
 
-												<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 float-right">
+												<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 float-right to-h">
 													<button class="btn btn-primary btn-sm " type="button" id="add"><i class="fa fa-plus"></i></button>
 												</div>
 
@@ -265,6 +267,17 @@ $db = new Database;
 			// 	height: "toggle"
 			// }, 200, function(){
 			// });
+			$(".to-h").each(function(){
+				$(this).removeClass('d-none');
+			});
+			$("#admit").removeClass("d-none");
+			$("#discharge").removeClass("d-none");
+			var table = $("#prescription_table").DataTable();
+			table.clear().draw();
+			$("#lab_test").empty();
+			$("textarea[name='dietary']").val("");
+			$("textarea[name='dietary']").removeAttr("readonly");
+			$("#symptom_list").empty();
 			$("#evaluation_part").show();
 			$("#patient_overview").css({"opacity":"1"});
 			$("#test_body").empty();
@@ -379,7 +392,7 @@ $db = new Database;
 			var form_one = [];
 			var form_data =[];
 			for(var i = 0; i<data.length; i++){
-				form_one[i] =[data[i][0],data[i][2],data[i][3]];
+				form_one[i] =[data[i][1],data[i][2],data[i][3]];
 			}
 			var jsonString = JSON.stringify(form_one);
 			console.log(jsonString);
@@ -387,11 +400,13 @@ $db = new Database;
 			form_data.push({name:"plan" , value: plan});
 			form_data.push({name:"id" , value: 19});
 			form_data.push({name:"er_id" , value: er_id});
+			form_data.push({name:"status" , value: "Discharged"});
 			$.ajax({
 				url:"assets/includes/class_handler.php",
 				type:"POST",
 				data:form_data,
 				success:function(data){
+					console.log(data);
 					if(data == true){
 						new PNotify({
 							text: 'Success!',
@@ -401,8 +416,9 @@ $db = new Database;
 						$("#m_add_evaluation").modal('hide');
 						table.clear().draw();;
 						$("textarea[name='dietary']").val("");
-						$("select[name='medicine_name'] option:selected").each('selected', function() {
-							$(this).remove();
+						$("select[name='medicine_name'] option").each(function() {
+							$(this).prop("selected","selected");
+							return false;
 						});
 						updateTable();
 					}
