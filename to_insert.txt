@@ -475,8 +475,8 @@ db.roles.insert([
 
 //users
 db.users.insert([{
-"id" : "1",
-"email" : "dherrick.cuevas@gmail.com",
+"user_id" : "1",
+"id" : "doctor",
 "password" : "3c2a6eb64cc629de76c419308830c53bbe63b874f6a526f7cd784182b33a2f5f3daaab47b5bde5868b82e4dd3b521d147a7542292b689acdf60122b97e99523f",
 "salt" : "ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413",
 "role_id" : "4",
@@ -484,26 +484,17 @@ db.users.insert([{
 "created_date" : "09/19/2018"
 },
 {
-"id" : "2",
-"email" : "philip.polidan@gmail.com",
+"user_id" : "2",
+"id" : "PN-00001",
 "password" : "3c2a6eb64cc629de76c419308830c53bbe63b874f6a526f7cd784182b33a2f5f3daaab47b5bde5868b82e4dd3b521d147a7542292b689acdf60122b97e99523f",
 "salt" : "ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413",
-"role_id" : "4",
+"role_id" : "5",
 "active" : "1",
 "created_date" : "09/19/2018"
 },
 {
-"id" : "3",
-"email" : "ian.historillo@gmail.com",
-"password" : "3c2a6eb64cc629de76c419308830c53bbe63b874f6a526f7cd784182b33a2f5f3daaab47b5bde5868b82e4dd3b521d147a7542292b689acdf60122b97e99523f",
-"salt" : "ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413",
-"role_id" : "4",
-"active" : "1",
-"created_date" : "09/19/2018"
-},
-{
-"id" : "4",
-"email" : "laboratory@gmail.com",
+"user_id" : "3",
+"id" : "laboratory",
 "password" : "3c2a6eb64cc629de76c419308830c53bbe63b874f6a526f7cd784182b33a2f5f3daaab47b5bde5868b82e4dd3b521d147a7542292b689acdf60122b97e99523f",
 "salt" : "ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413",
 "role_id" : "6",
@@ -511,8 +502,8 @@ db.users.insert([{
 "created_date" : "09/19/2018"
 },
 {
-"id" : "5",
-"email" : "radiologist@gmail.com",
+"user_id" : "4",
+"id" : "radiologist",
 "password" : "3c2a6eb64cc629de76c419308830c53bbe63b874f6a526f7cd784182b33a2f5f3daaab47b5bde5868b82e4dd3b521d147a7542292b689acdf60122b97e99523f",
 "salt" : "ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413",
 "role_id" : "7",
@@ -521,8 +512,8 @@ db.users.insert([{
 }
 ,
 {
-"id" : "6",
-"email" : "evaluator@gmail.com",
+"user_id" : "5",
+"id": "evaluator",
 "password" : "3c2a6eb64cc629de76c419308830c53bbe63b874f6a526f7cd784182b33a2f5f3daaab47b5bde5868b82e4dd3b521d147a7542292b689acdf60122b97e99523f",
 "salt" : "ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413",
 "role_id" : "8",
@@ -531,8 +522,8 @@ db.users.insert([{
 }
 ,
 {
-"id" : "7",
-"email" : "cashier@gmail.com",
+"user_id" : "6",
+"id" : "cashier",
 "password" : "3c2a6eb64cc629de76c419308830c53bbe63b874f6a526f7cd784182b33a2f5f3daaab47b5bde5868b82e4dd3b521d147a7542292b689acdf60122b97e99523f",
 "salt" : "ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413",
 "role_id" : "9",
