@@ -34,7 +34,7 @@
 					<img class="mr-3" src="assets/img/avatars/boy.svg" alt="" width="48" height="48">
 					<div class="lh-100">
 						<h6 class="mb-0 text-white lh-100">Welcome, <?php echo $_SESSION['full_name']; ?>!</h6>
-						<small class="text-white"><?php echo $_SESSION['user_id']; ?></small>
+						<small class="text-white"><?php echo $_SESSION['id']; ?></small>
 					</div>
 				</div>
 			</div>
@@ -55,6 +55,9 @@
 										<th width="10%">Actions</th>
 									</tr>
 								</thead>
+								<tbody>
+									
+								</tbody>
 							</table>
 
 						</div>
@@ -164,9 +167,104 @@
 	</div>
 </div>
 <?php include('assets/parts/scripts.php'); ?>
+<?php include('assets/modals/m_view_er_transaction.php'); ?>
 
 <script type="text/javascript">
-	$("#transaction_table").DataTable({
+
+	<?php
+	$patient_no = explode("PN-", $_SESSION['id']);
+	?>
+
+	var transaction_table = $("#transaction_table").DataTable({
 		responsive: true
 	});
+
+	$(document).ready(function(){
+		$.ajax({
+			type: "POST",
+			url: "assets/includes/patient_transaction_handler.php",
+			data: {id:1, patient_id:'<?php echo $patient_no[1]; ?>'},
+			success: function(data){
+				var data = JSON.parse(data);
+
+				if (data[0] == "1") {
+					for (var i = 0; i <= data[1].length -1; i++) {
+						var action = "<button data-target='#m_view_er_transaction' class='btn btn-info btn-sm' onclick='get_transaction_details(this)' data-erid='"+data[1][i][0]+"' data-pid='<?php echo $_SESSION['patient_oid']; ?>'><i class='fa fa-eye'></i></button>";
+
+						transaction_table.row.add([
+							data[1][i][2],
+							data[1][i][3],
+							data[1][i][4],
+							action
+							]).draw(false);
+					}
+				}
+
+				else{
+
+				}
+
+			}
+		});
+	});
+
+	function get_transaction_details(object){
+
+		var patient_oid = $(object).data('pid');
+		var er_id = $(object).data('erid');
+		var modal = $(object).data('target');
+		
+		$.ajax({
+			type: "POST",
+			url: "assets/includes/class_handler.php",
+			data: { id: 10, er_id: er_id, patient_oid : patient_oid},
+			success: function(data){
+				var data = JSON.parse(data);
+
+				console.log(data);
+
+				$("#pname").text(data[0]);
+				$("#p_id").text("PN-"+data[1]);
+				$("#transaction_date").text(data[2]);
+				$("#blood_pressure").text(data[3]);
+				$("#breathing").text(data[4]);
+				$("#pulse").text(data[5]);
+				$("#body_temperature").text(data[6]);
+				$("#is_allergic").text(data[7]);
+
+				if (data[8] == "") {
+					$("#allergy_name").text("No Allergies");
+				}
+
+				else{
+					$("#allergy_name").text(data[8]);
+				}
+
+				
+				$("#is_medication").text(data[9]);
+
+				if (data[10] == "") {
+					$("#medication_name").text("No Recent Medication Available");
+				}
+
+				else{
+					$("#medication_name").text(data[10]);
+				}
+
+				if(data[12].length > 0){
+					console.log(data[12]);
+					for(var i = 0; i<data[12].length; i++){
+						$("#lab_test").append(data[12][i]);
+					}
+				}
+
+				for(var i = 0; i<data[13].length;i++){
+					$("#symptom_list").append(data[13][i]);
+				}
+
+				$(modal).modal('show');
+			}
+		});
+
+	}
 </script>
