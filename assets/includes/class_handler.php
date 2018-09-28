@@ -382,6 +382,7 @@ if(isset($_POST['id'])){
 			$name = "";
 			$address = "";
 			$p_id = $er->patient_id;
+			$b_date = "";
 			$a_date = $er->assessment_date;
 			$bp = "";
 			$breathing = "";
@@ -397,6 +398,7 @@ if(isset($_POST['id'])){
 			$e_id = $er->er_no;
 			foreach($er->patient as $patient){
 				$name = $patient->lname.", ".$patient->fname." ".$patient->mname;
+				$b_date = date("F d, Y",strtotime($patient->bdate));
 				$address = $patient->address;
 				if($patient->sex == "male"){
 					$sex ="boy";
@@ -416,6 +418,7 @@ if(isset($_POST['id'])){
 				$medications = $triage->medications;
 			}
 	//get labtests
+			$items = [];
 			if(!isset($_POST['status'])){
 				foreach($db->getLabTestByER($_POST['er_id']) as $lab_test){
 					$vtest= "<div class='row border-bottom mt-1 mb-1'>";
@@ -446,8 +449,8 @@ if(isset($_POST['id'])){
 				}
 			}
 			else{
-				$vtest = "";
 				foreach($db->getLabTestByER($_POST['er_id']) as $lab_test){
+					$vtest = "";
 					foreach($db->getTest($lab_test->test_id) as $ltest){
 						$vtest.="<li class='list-group-item d-flex justify-content-between lh-condensed'>
 								<div>
@@ -458,8 +461,8 @@ if(isset($_POST['id'])){
 					$test[] = $vtest;
 				}
 				foreach($db->getSymptomEr($_POST['er_id']) as $squestion){
-					$s = "";
 					foreach($squestion->symptom_ids as $id){
+						$s = "";
 						foreach($db->getSymptom($id) as $symp){
 							$s.="<li class='list-group-item d-flex justify-content-between lh-condensed'>
 								<div>
@@ -471,10 +474,34 @@ if(isset($_POST['id'])){
 						$sympt[] = $s;
 					}
 				}
+
+				$items = [];
+				if($_POST['status1'] == "Discharged"){
+					$plan = "";
+					$st = "";
+					foreach($db->getEvaluation($_POST['er_id']) as $eval){
+						$plan = $eval->dietary_plan;
+						if($plan == "" || $plan == " ")
+							$plan = "None";
+						$st =$eval->status;
+						foreach($eval->evaluation_items as $item){
+							$items[] = [$item->medicine_name,$item->dosage,$item->frequency];
+						}
+					}
+					$items[] = $plan;
+					$items[] = $st;
+				}
+				if(count($test) == 0){
+					$vtest="<li class='list-group-item d-flex justify-content-between lh-condensed'>
+					<div>
+					<small class='text-muted'>None</small>
+					</div></li>";
+					$test[] = $vtest;
+				}
 			}
 			
 		}
-		echo json_encode(array($name,$p_id,$a_date,$bp,$breathing,$pulse,$temp,ucfirst($isallergic),$allergies,ucfirst($hasmedication),$medications,$sex,$test,$sympt,$_POST['er_id']));
+		echo json_encode(array($name,$p_id,$a_date,$bp,$breathing,$pulse,$temp,ucfirst($isallergic),$allergies,ucfirst($hasmedication),$medications,$sex,$test,$sympt,$_POST['er_id'],$items,$b_date));
 	}
 	else if($id == 11){
 		foreach($db->getPatient($_POST['patient_oid']) as $patient){
@@ -524,20 +551,22 @@ if(isset($_POST['id'])){
 		foreach($db->getCLabTest($_POST['type']) as $res){
 			$arr = [];
 			foreach($res->lab_test as $labtest){
-				foreach($db->getERById($labtest->er_id) as $er){
-					$arr[0] = "ER-".$er->er_no;
-					foreach($db->getPatient($er->patient_oid) as $patient){
-						$arr[1] = ucfirst($patient->lname).", ".ucfirst($patient->fname)." ".ucfirst($patient->mname);
-						$arr[2] = date("F, d Y",strtotime($patient->bdate));
+				if($labtest->status == $_POST['status']){
+					foreach($db->getERById($labtest->er_id) as $er){
+						$arr[0] = "ER-".$er->er_no;
+						foreach($db->getPatient($er->patient_oid) as $patient){
+							$arr[1] = ucfirst($patient->lname).", ".ucfirst($patient->fname)." ".ucfirst($patient->mname);
+							$arr[2] = date("F, d Y",strtotime($patient->bdate));
+						}
 					}
+					$arr[3] = $res->name;
+
+					$arr[4] = $labtest->status;
+					$arr[5] = (string)$labtest->_id;
+					$arr[6] = $labtest->er_id;
+					$arr[7] = "PN-".$er->patient_id;
+					$arr1[] = $arr;
 				}
-				$arr[3] = $res->name;
-				
-				$arr[4] = $labtest->status;
-				$arr[5] = (string)$labtest->_id;
-				$arr[6] = $labtest->er_id;
-				$arr[7] = "PN-".$er->patient_id;
-				$arr1[] = $arr;
 			}
 			
 		}
@@ -561,7 +590,7 @@ if(isset($_POST['id'])){
 		$status = 0;
 		$count = $db->getCERS($_POST['status']);
 		if($count != $_POST['tcount'])
-			$status = true;
+			$status = "true";
 		else
 			$status = $_POST['tcount'];
 		echo $status;

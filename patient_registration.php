@@ -29,7 +29,7 @@ $db = new Database;
 								<h3 class="border-bottom border-gray pb-2">Triage Assessment</h3>
 
 								<div class="row">
-									<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+									<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 d-none">
 										<div class="form-group" style="text-align: left">
 											<label>Patient No.</label>
 											<h6><strong><span id="patient_no"><?php echo $db->getPatientNumber()?></span></strong></h6>
@@ -50,8 +50,6 @@ $db = new Database;
 									</div> -->
 
 								</div>
-
-								<hr>
 
 								<div class="row">
 

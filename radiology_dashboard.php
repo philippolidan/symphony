@@ -68,6 +68,16 @@
 		},
 		"order": [[ 4, "desc" ]]
 	});
+	$('<div class="float-right col-lg-2 col-md-6">' +
+		'<select class="form-control" id="er_status">'+
+		'<option value="pending">Pending</option>'+
+		'<option value="Done">Done</option>'+
+		'</select>' + 
+		'</div>').appendTo("#lab_test_table_wrapper .dataTables_filter");
+	$(".dataTables_filter label").addClass("pull-right");
+	$("#er_status").on('change',function(){
+		updateTable();
+	});
 	updateTable();
 	check();
 	function check(){
@@ -87,10 +97,11 @@
 		setTimeout(check,2000);
 	}
 	function updateTable(){
+		var t = $("#er_status option:selected").val();
 		$.ajax({
 			url:"assets/includes/class_handler.php",
 			type:"POST",
-			data: {id:15,type:2},
+			data: {id:15,type:2,status:t},
 			success:function(data){
 				var table = $('#lab_test_table').DataTable();
 				var data = JSON.parse(data);

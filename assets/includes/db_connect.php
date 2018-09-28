@@ -158,6 +158,9 @@ class Database
 			]
 		);
 	}
+	public function getCountPendingLabTestByER($er_id){
+		return $this->db->lab_test->count([ '$and' => [['er_id' => $er_id],['status' => 'pending']]]);
+	}
 	public function getCountPendingByER($er_id){
 		return $this->db->lab_test->count([ "er_id" => $er_id ,"status" => "done"]);
 	}
@@ -185,22 +188,46 @@ class Database
 					]
 				]
 			]);
-		else
-			return $this->db->er_transaction->aggregate(
-			[
-				['$match' =>['status' =>$status]],
-				['$lookup' =>
+		else{
+			if($status == "Discharged"){
+				return $this->db->er_transaction->aggregate(
 					[
-						"from" => "patient",
-						"localField" => "patient_id",
-						"foreignField" => "patient_id",
-						"as" => "patient"
+						['$match' =>['status' =>['$in'=>[$status,'Paid']]]],
+						['$lookup' =>
+						[
+							"from" => "patient",
+							"localField" => "patient_id",
+							"foreignField" => "patient_id",
+							"as" => "patient"
+						]
 					]
-				]
-			]);
+				]);
+			}
+			else{
+				return $this->db->er_transaction->aggregate(
+					[
+						['$match' =>['status' =>$status ]],
+						['$lookup' =>
+						[
+							"from" => "patient",
+							"localField" => "patient_id",
+							"foreignField" => "patient_id",
+							"as" => "patient"
+						]
+					]
+				]);
+			}
+			
+		}
+			
 	}
 	public function getCERS($status){
+		if($status == "Discharged"){
+			return $this->db->er_transaction->count([ '$or' => [['status' => $status],['status' => 'Paid']]]);
+		}
+		else{
 			return $this->db->er_transaction->count(['status'=>$status]);
+		}
 		
 	}
 	// public function getPatientERById($id,$patient_oid){
@@ -756,16 +783,8 @@ class Database
 				]
 			);
 		}
-		$cc = 0;
-		foreach($this->getLabTestByER($er_id) as $er){
-			if($er->status == 'Done'){
-				$cc = 1;
-			}
-			else{
-				$cc = 0;
-			}
-		}
-		if($cc == 1){ // all is done
+		$cc = $this->getCountPendingLabTestByER($er_id);
+		if($cc == 0){
 			$update = $this->db->er_transaction->updateOne( 
 				['_id' => new MongoDB\BSON\ObjectId($er_id)], 
 				['$set' => 
@@ -773,6 +792,8 @@ class Database
 				]
 			);
 		}
+		// if($cc == 1){ // all is done
+		// 	
 		return array(true,$patient_oid,$msgg);
 	}
 	public function bill($data){
@@ -838,7 +859,7 @@ class Database
 		}
 		$evaluation = 
 		[
-			"er_id" => $data['er_id'], "dietary_plan" => $data['plan'],"evaluation_items" => $prescription
+			"er_id" => $data['er_id'], "dietary_plan" => $data['plan'],"status" =>$data['status'],"evaluation_items" => $prescription
 		];
 
 		$result_evaluation = $this->db->evaluation->insertOne($evaluation);
