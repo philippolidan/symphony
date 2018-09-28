@@ -108,7 +108,7 @@
 				table.clear().draw();
 				data.forEach(function(d){
 					button = "<button class='btn btn-primary btn-sm' data-target='m_input_test_result' data-erid ='"+d[6]+"' data-pid='"+d[0]+"' data-id ='"+d[5]+"' data-type ='"+d[3]+"' onclick='open_modal(this)' type='button' value='"+d[5]+"'><i class='fas fa-eye'></i></button>";
-					table.row.add([d[0],d[7],d[1],d[2],d[3],d[4],button]).draw(false);
+					table.row.add([d[0],d[7],d[1],d[2],d[3],d[4].toUpperCase(),button]).draw(false);
 				});
 			}
 		});

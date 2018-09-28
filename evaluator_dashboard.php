@@ -120,7 +120,7 @@
 				table.clear().draw();
 				data.forEach(function(d){
 					button = "<button class='btn btn-primary btn-sm' data-target='m_add_evaluation' data-erid ='"+d[4]+"' data-pid='"+d[5]+"' onclick='open_modal(this)' type='button' value='"+d[5]+"'><i class='fas fa-eye'></i></button>";
-					table.row.add([d[0],d[6],d[1],d[2],d[3],button]).draw(false);
+					table.row.add([d[0],d[6],d[1],d[2],d[3].toUpperCase(),button]).draw(false);
 				});
 				console.log(data);
 			}

@@ -1,4 +1,4 @@
-<?php include('assets/parts/header.php'); include('assets/parts/session_page.php');?>
+<?php include('assets/parts/header.php'); ?>
 
 <div class="wrapper">
 
