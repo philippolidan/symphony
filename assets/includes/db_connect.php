@@ -347,7 +347,7 @@ class Database
 				//insert users
 				$user = 
 				[
-					"patient_id" => $patient_no,
+					"id" => $patient_no,
 					"password" => $password,
 					"salt" => $salt,
 					"role_id" => "5",
@@ -812,8 +812,8 @@ class Database
 		}
 		return true;
 	}
-	public function loginUser($email, $password){
-		$result = $this->db->users->findOne(array("patient_id" => $email, "salt" => $password));
+	public function loginUser($id, $password){
+		$result = $this->db->users->findOne(["id" => $id, "salt" => $password]);
 		return $result;
 	}
 	public function loginUserById($user_id){
@@ -846,6 +846,10 @@ class Database
 
 	public function getPatientInformation($patient_id){
 		return $this->db->patient->findOne(["patient_id" => $patient_id]);
+	}
+
+	public function getUserInformation($user_id){
+
 	}
 }
 ?>
