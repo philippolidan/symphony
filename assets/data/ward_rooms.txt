@@ -1,0 +1,124 @@
+{
+  "data": [
+    [
+      "Room 211",
+      "Second Floor",
+      "₱ 400.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 211 - Second Floor (Ward)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 212",
+      "Second Floor",
+      "₱ 400.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 212 - Second Floor (Ward)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 213",
+      "Second Floor",
+      "₱ 400.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 213 - Second Floor (Ward)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 214",
+      "Second Floor",
+      "₱ 400.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 214 - Second Floor (Ward)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 215",
+      "Second Floor",
+      "₱ 400.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 215 - Second Floor (Ward)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 216",
+      "Second Floor",
+      "₱ 400.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 216 - Second Floor (Ward)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 217",
+      "Second Floor",
+      "₱ 400.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 217 - Second Floor (Ward)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 218",
+      "Second Floor",
+      "₱ 400.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 218 - Second Floor (Ward)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 219",
+      "Second Floor",
+      "₱ 400.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 219 - Second Floor (Ward)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 120",
+      "First Floor / Ground Floor",
+      "₱ 900.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 120 - Second Floor (Ward)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 121",
+      "First Floor / Ground Floor",
+      "₱ 900.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 121 - Second Floor (Ward)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 122",
+      "First Floor / Ground Floor",
+      "₱ 900.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 122 - Second Floor (Ward)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 123",
+      "First Floor / Ground Floor",
+      "₱ 900.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 123 - Second Floor (Ward)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 124",
+      "First Floor / Ground Floor",
+      "₱ 900.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 124 - Second Floor (Ward)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 125",
+      "First Floor / Ground Floor",
+      "₱ 900.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 125 - Second Floor (Ward)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 126",
+      "First Floor / Ground Floor",
+      "₱ 900.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 126 - Second Floor (Ward)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 127",
+      "First Floor / Ground Floor",
+      "₱ 900.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 127 - Second Floor (Ward)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 128",
+      "First Floor / Ground Floor",
+      "₱ 900.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 128 - Second Floor (Ward)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 129",
+      "First Floor / Ground Floor",
+      "₱ 900.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 129 - Second Floor (Ward)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 130",
+      "First Floor / Ground Floor",
+      "₱ 900.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 130 - Second Floor (Ward)'><i class='fa fa-check'></i></button>"
+    ]
+  ]
+}

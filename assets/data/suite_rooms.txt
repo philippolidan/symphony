@@ -1,0 +1,64 @@
+{
+  "data": [
+    [
+      "Room 611",
+      "Sixth Floor",
+      "₱ 3 000.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 611 - Sixth Floor (Suite)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 612",
+      "Sixth Floor",
+      "₱ 3 000.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 612 - Sixth Floor (Suite)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 613",
+      "Sixth Floor",
+      "₱ 3 000.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 613 - Sixth Floor (Suite)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 614",
+      "Sixth Floor",
+      "₱ 3 000.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 614 - Sixth Floor (Suite)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 615",
+      "Sixth Floor",
+      "₱ 3 000.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 615 - Sixth Floor (Suite)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 616",
+      "Sixth Floor",
+      "₱ 3 000.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 616 - Sixth Floor (Suite)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 617",
+      "Sixth Floor",
+      "₱ 3 000.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 617 - Sixth Floor (Suite)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 618",
+      "Sixth Floor",
+      "₱ 3 000.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 618 - Sixth Floor (Suite)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 619",
+      "Sixth Floor",
+      "₱ 3 000.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 619 - Sixth Floor (Suite)'><i class='fa fa-check'></i></button>"
+    ],
+    [
+      "Room 620",
+      "Sixth Floor",
+      "₱ 3 000.00",
+      "<button class='btn-select-bed btn btn-sm btn-primary next' onclick='next()' value='Room 620 - Sixth Floor (Suite)'><i class='fa fa-check'></i></button>"
+    ]
+  ]
+}
