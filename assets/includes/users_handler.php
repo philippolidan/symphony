@@ -53,6 +53,9 @@ if (isset($_POST['id']) && isset($_POST['password'])) {
 		if ($result['role_id'] == 9) {
 			header('Location: ../../billing_dashboard.php');
 		}
+		if ($result['role_id'] == 10) {
+			header('Location: ../../admission_dashboard.php');
+		}
 		
 	}
 

@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div class="modal fade" id="m_add_evaluation" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="m_add_evaluation" role="dialog" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered modal-fluid" role="document">
 		<div class="modal-content">
 
@@ -87,7 +87,7 @@
 										</div>
 
 										<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt-2 mb-2">
-											<select id="room_type" name="room_type" class="select2" style="width: 100%">
+											<select id="room_type" name="room_type" class="form-control" style="width: 100%">
 												<option disabled selected>Select Room Type</option>
 												<option value="1">Suite</option>
 												<option value="2">Private</option>
@@ -372,7 +372,6 @@
 </div>
 
 <script type="text/javascript">
-	$("#room_type").select2();
 	var bed_table = $("#bed_list_table").DataTable();
 	var prescription_table = $("#precription_table").DataTable({
 		"bPaginate": false,

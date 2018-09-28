@@ -462,8 +462,8 @@ if(isset($_POST['id'])){
 				}
 				foreach($db->getSymptomEr($_POST['er_id']) as $squestion){
 					foreach($squestion->symptom_ids as $id){
-						$s = "";
 						foreach($db->getSymptom($id) as $symp){
+							$s = "";
 							$s.="<li class='list-group-item d-flex justify-content-between lh-condensed'>
 								<div>
 									<small class='text-muted'>".$symp->name."</small>
@@ -476,7 +476,7 @@ if(isset($_POST['id'])){
 				}
 
 				$items = [];
-				if($_POST['status1'] == "Discharged"){
+				if($_POST['status1'] == "Discharged" || $_POST['status1'] == "All" || $_POST['status1'] == "Admitted"){
 					$plan = "";
 					$st = "";
 					foreach($db->getEvaluation($_POST['er_id']) as $eval){
@@ -488,8 +488,11 @@ if(isset($_POST['id'])){
 							$items[] = [$item->medicine_name,$item->dosage,$item->frequency];
 						}
 					}
-					$items[] = $plan;
-					$items[] = $st;
+					$count = count($items);
+					if($count > 0){
+						$items[] = $plan;
+						$items[] = $st;
+					}
 				}
 				if(count($test) == 0){
 					$vtest="<li class='list-group-item d-flex justify-content-between lh-condensed'>
@@ -587,29 +590,40 @@ if(isset($_POST['id'])){
 		echo json_encode($symp);
 	}
 	else if($id == 17){
-		$status = 0;
-		$count = $db->getCERS($_POST['status']);
+		$status = "0";
+		$type = 0;
+		if(isset($_POST['type']))
+			$type = $_POST['type'];
+		$count = $db->getCERS($_POST['status'],$type);
 		if($count != $_POST['tcount'])
-			$status = "true";
+			$status = true;
 		else
 			$status = $_POST['tcount'];
 		echo $status;
 	}
 	else if($id == 18){
 		$arr1 = [];
-		foreach($db->getERS($_POST['status']) as $res){
+		$type = 0;
+		if(isset($_POST['type']))
+			$type = $_POST['type'];
+		foreach($db->getERS($_POST['status'],$type) as $res){
 			$arr = [];
 			foreach($res->patient as $patient){
 				$arr[0] = "ER-".$res->er_no;
 				$arr[1] = ucfirst($patient->lname).", ".ucfirst($patient->fname)." ".ucfirst($patient->mname);
-				$arr[2] = date("F, d Y",strtotime($patient->bdate));
+				$arr[2] = date("F d, Y",strtotime($patient->bdate));
 				$arr[3] = $res->status;
+
+				if($type == 2){
+					foreach($db->getEvaluation((string)$res->_id) as $eval){
+						$arr[3] = $eval->status;
+					}
+				}
 				$arr[4] = (string)$res->_id;
 				$arr[5] = (string)$patient->_id;
 				$arr[6] = "PN-".$patient->patient_id;
 				$arr1[] = $arr;
 			}
-			
 		}
 		echo json_encode($arr1);
 	}

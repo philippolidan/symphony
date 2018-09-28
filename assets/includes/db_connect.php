@@ -10,7 +10,7 @@ class Database
 	public function getPatientNumber(){
 		// $number = count(iterator_to_array($this->db->er_transaction->find()));
 		$pn = "PN-00001";
-		foreach($this->db->patient->aggregate([['$sort' => ['patient_id' => -1]]]) as $patient){
+		foreach($this->db->patient->aggregate([['$sort' => ['patient_id' => 1]]]) as $patient){
 			$number = $patient->patient_id;
 			$pn = "PN-".str_pad($number + 1, 5, 0, STR_PAD_LEFT);
 		}
@@ -174,12 +174,72 @@ class Database
 		return $this->db->er_transaction->find([ '$and' => [['_id' =>new MongoDB\BSON\ObjectId($er_id)],['status' => $status]]]);
 		// [['_id' => new MongoDB\BSON\ObjectId($er_id),"status" => $status]]
 	}
-	public function getERS($status = null){
-		if($status == null)
-			return $this->db->er_transaction->aggregate(
-			[
+	public function getERS($status = null,$type = 0){
+		if($type == 0 || $type == 2){
+			if($status == null)
+				return $this->db->er_transaction->aggregate(
+					[
 
-				['$lookup' =>
+						['$lookup' =>
+						[
+							"from" => "patient",
+							"localField" => "patient_id",
+							"foreignField" => "patient_id",
+							"as" => "patient"
+						]
+					]
+				]);
+			else{
+				if($status == "Discharged"){
+					return $this->db->er_transaction->aggregate(
+						[
+							['$match' =>['status' =>['$in'=>[$status,'Paid']]]],
+							['$lookup' =>
+							[
+								"from" => "patient",
+								"localField" => "patient_id",
+								"foreignField" => "patient_id",
+								"as" => "patient"
+							]
+						]
+					]);
+				}
+				else if($status == "All"){
+					return $this->db->er_transaction->aggregate(
+						[
+							['$match' =>['status' => ['$ne'=>'pending']]],
+							['$lookup' =>
+							[
+								"from" => "patient",
+								"localField" => "patient_id",
+								"foreignField" => "patient_id",
+								"as" => "patient"
+							]
+						]
+					]);
+				}
+				else{
+					return $this->db->er_transaction->aggregate(
+						[
+							['$match' =>['status' =>$status ]],
+							['$lookup' =>
+							[
+								"from" => "patient",
+								"localField" => "patient_id",
+								"foreignField" => "patient_id",
+								"as" => "patient"
+							]
+						]
+					]);
+				}
+
+			}
+		}
+		else{
+			return $this->db->er_transaction->aggregate(
+				[
+					['$match' =>['status' =>$status ]],
+					['$lookup' =>
 					[
 						"from" => "patient",
 						"localField" => "patient_id",
@@ -188,46 +248,26 @@ class Database
 					]
 				]
 			]);
-		else{
-			if($status == "Discharged"){
-				return $this->db->er_transaction->aggregate(
-					[
-						['$match' =>['status' =>['$in'=>[$status,'Paid']]]],
-						['$lookup' =>
-						[
-							"from" => "patient",
-							"localField" => "patient_id",
-							"foreignField" => "patient_id",
-							"as" => "patient"
-						]
-					]
-				]);
-			}
-			else{
-				return $this->db->er_transaction->aggregate(
-					[
-						['$match' =>['status' =>$status ]],
-						['$lookup' =>
-						[
-							"from" => "patient",
-							"localField" => "patient_id",
-							"foreignField" => "patient_id",
-							"as" => "patient"
-						]
-					]
-				]);
-			}
-			
 		}
+		
 			
 	}
-	public function getCERS($status){
-		if($status == "Discharged"){
-			return $this->db->er_transaction->count([ '$or' => [['status' => $status],['status' => 'Paid']]]);
+	public function getCERS($status,$type){
+		if($type == 0 || $type == 2){
+			if($status == "Discharged"){
+				return $this->db->er_transaction->count([ '$or' => [['status' => $status],['status' => 'Paid']]]);
+			}
+			else if($status == "All"){
+				return $this->db->er_transaction->count(['status' => ['$ne' => 'pending']]);
+			}
+			else{
+				return $this->db->er_transaction->count(['status'=>$status]);
+			}
 		}
 		else{
 			return $this->db->er_transaction->count(['status'=>$status]);
 		}
+		
 		
 	}
 	// public function getPatientERById($id,$patient_oid){
@@ -588,6 +628,9 @@ class Database
 		$date_completed = date("m/d/Y H:i:s");
 		$patient_oid ='';
 		$er_id = '';
+
+		$host= gethostname();
+		$ip = gethostbyname($host);
 		foreach ($this->getLabTest($data[$c - 1]) as $info) {
 			$patient_oid = $info->patient_oid;
 			$er_id = $info->er_id;
@@ -601,7 +644,7 @@ class Database
 					'status' => 'Done','date_completed' => $date_completed]
 				]	
 			);
-			$msgg = "Fecalysis Result \nColor:".$data[0]."\nConsistency:".$data[1]."\nPus:".$data[2]."\nRed Blood Cell:".$data[3]."\nOthers:".$data[4]."\nInterpretation:".$data[5];
+			$msgg = "Your Fecalysis test is done!\nLog in to this link ".$ip."/symphony/ for the result";
 			$update = $this->db->lab_test->updateOne( 
 				['_id' => new MongoDB\BSON\ObjectId ($data[$c - 1])], 
 				['$set' => 
@@ -617,7 +660,7 @@ class Database
 					'hematocrit' => $data[3],'wbc' => $data[4],'rbc' => $data[5],'pus' => $data[6],'platelet_count' => $data[7],'interpretation' => $data[8],'status' => 'Done','date_completed' => $date_completed]
 				]	
 			);
-			$msgg = "Urinalysis Result \nColor:".$data[0]."\nTransparency:".$data[1]."\nHemoglobin:".$data[2]."\nHematocrit:".$data[3]."\nWhite Blood Cell:".$data[4]."\nRed Blood Cell:".$data[5]."\nPlatelet Count:".$data[7]."\nPus:".$data[6]."\nInterpretation:".$data[8];
+			$msgg = "Your Urinalysis test is done!\nLog in to this link ".$ip."/symphony/ for the result";
 			$update = $this->db->lab_test->updateOne( 
 				['_id' => new MongoDB\BSON\ObjectId ($data[$c - 1])], 
 				['$set' => 
@@ -633,7 +676,7 @@ class Database
 					['findings' => $data[0],'interpretation' => $data[1],'status' => 'Done','date_completed' => $date_completed]
 				]	
 			);
-			$msgg = "Kidney, Ureter and Bladder X-ray Result \nFindings:".$data[0]."\nInterpretation:".$data[1];
+			$msgg = "Your Kidney,Ureter and BladderX-ray is done\nLogin to this link ".$ip."/symphony for the result";
 			$update = $this->db->lab_test->updateOne( 
 				['_id' => new MongoDB\BSON\ObjectId ($data[$c - 1])], 
 				['$set' => 
@@ -648,7 +691,7 @@ class Database
 					['findings' => $data[0],'interpretation' => $data[1],'status' => 'Done','date_completed' => $date_completed]
 				]	
 			);
-			$msgg = "Chest X-ray Result \nFindings:".$data[0]."\nInterpretation:".$data[1];
+			$msgg = "Your Chest X-ray is done\nLog in to this link ".$ip."/symphony/ for the result";
 			$update = $this->db->lab_test->updateOne( 
 				['_id' => new MongoDB\BSON\ObjectId ($data[$c - 1])], 
 				['$set' => 
@@ -663,7 +706,7 @@ class Database
 					[ 'findings' => $data[0],'interpretation' => $data[1],'status' => 'Done','date_completed' => $date_completed]
 				]	
 			);
-			$msgg = "Lungs X-ray Result \nFindings:".$data[0]."\nInterpretation:".$data[1];
+			$msgg = "Your Lungs X-ray is done\nLog in to this link ".$ip."/symphony/ for the result";
 			$update = $this->db->lab_test->updateOne( 
 				['_id' => new MongoDB\BSON\ObjectId ($data[$c - 1])], 
 				['$set' => 
@@ -678,7 +721,7 @@ class Database
 					[ 'indication' => $data[0],'comparison' => $data[1],"findings" =>$data[2],'interpretation' => $data[3],'status' => 'Done','date_completed' => $date_completed]
 				]	
 			);
-			$msgg = "Abdomen X-ray Result \nIndication:".$data[0]."\nComparison:".$data[1]."\nFindings:".$data[2]."\nInterpretation:".$data[3];
+			$msgg = "Your Abdomen X-ray is done\nLog in to this link ".$ip."/symphony/ for the result";
 			$update = $this->db->lab_test->updateOne( 
 				['_id' => new MongoDB\BSON\ObjectId ($data[$c - 1])], 
 				['$set' => 
@@ -700,7 +743,7 @@ class Database
 						"interpretation" => $data[15],'status' => 'Done','date_completed' => $date_completed]
 				]	
 			);
-			$msgg = "Complete Blood Count (CBC) Result \nWhite Blood Cell Count:".$data[0]."\nRed Blood Cell Count:".$data[1]."\nHemoglobin:".$data[2]."\nHematocrit:".$data[3]."\nMCV:".$data[4]."\nMCHC:".$data[5]."\nRDW:".$data[6]."\nPlatelets:".$data[7]."\nNeutrophils:".$data[8]."\nLymphs:".$data[9]."\nMonocytes:".$data[10]."\nEOS:".$data[11]."\nBASO:".$data[12]."\nImmature Granulocytes:".$data[13]."\nImmature Grans:".$data[14]."\nInterpretation:".$data[15];
+			$msgg = "Your CBC is done\nLog in to this link ".$ip."/symphony/ for the result";
 			$update = $this->db->lab_test->updateOne( 
 				['_id' => new MongoDB\BSON\ObjectId ($data[$c - 1])], 
 				['$set' => 
@@ -715,7 +758,7 @@ class Database
 					['indication' => $data[0],'technique' => $data[1],"comparison" =>$data[2],'findings' => $data[3],"impression" => $data[4],"interpretation" => $data[5],'status' => 'Done','date_completed' => $date_completed]
 				]	
 			);
-			$msgg = "Computed Tomography Scan (CT Scan) Result \nIndication:".$data[0]."\nComparison:".$data[2]."\nTechnique:".$data[1]."\nFindings:".$data[3]."\nImpression:".$data[4]."\nInterpretation:".$data[5];
+			$msgg = "Your CT Scan is done\nLog in to this link ".$ip."/symphony/ for the result";
 			$update = $this->db->lab_test->updateOne( 
 				['_id' => new MongoDB\BSON\ObjectId ($data[$c - 1])], 
 				['$set' => 
@@ -730,7 +773,7 @@ class Database
 					['indication' => $data[0],'technique' => $data[1],"comparison" =>$data[2],'findings' => $data[3],"interpretation" => $data[4],'status' => 'Done','date_completed' => $date_completed]
 				]	
 			);
-			$msgg = "Magnetic Resonance Imaging Scan (MRI Scan) Result \nIndication:".$data[0]."\nComparison:".$data[2]."\nTechnique:".$data[1]."\nFindings:".$data[3]."\nInterpretation:".$data[4];
+			$msgg = "Your MRI Scan is done\nLog in to this link ".$ip."/symphony/ for the result";
 			$update = $this->db->lab_test->updateOne( 
 				['_id' => new MongoDB\BSON\ObjectId ($data[$c - 1])], 
 				['$set' => 
@@ -745,7 +788,7 @@ class Database
 					['body_parts' => $data[0],'impression' => $data[1],"conclusion" =>$data[2],'findings' => $data[3],"interpretation" => $data[4],'status' => 'Done','date_completed' => $date_completed]
 				]	
 			);
-			$msgg = "Sonography (Ultrasound) Result \nBody Parts:".$data[0]."\nFinding:".$data[3]."\nConclusion:".$data[2]."\nImpression:".$data[1]."\nInterpretation:". $data[4];
+			$msgg = "Your Ultrasound is done\nLog in to this link ".$ip."/symphony/ for the result";
 			$update = $this->db->lab_test->updateOne( 
 				['_id' => new MongoDB\BSON\ObjectId ($data[$c - 1])], 
 				['$set' => 
@@ -760,7 +803,7 @@ class Database
 					['impression' => $data[0],'conclusion' => $data[1],'findings' => $data[2],"interpretation" => $data[3],'status' => 'Done','date_completed' => $date_completed]
 				]	
 			);
-			$msgg = "Electrocardiogram (ECG) Result \nFinding:".$data[2]."\nConclusion:".$data[1]."\nImpression:". $data[0]."\nInterpretation:".$data[3];
+			$msgg = "Your ECG is done\nLog in to this link ".$ip."/symphony/ for the result";
 			$update = $this->db->lab_test->updateOne( 
 				['_id' => new MongoDB\BSON\ObjectId ($data[$c - 1])], 
 				['$set' => 
@@ -775,7 +818,7 @@ class Database
 					['result' => $data[0], 'flag' => $data[1],'impression' => $data[2],'interpretation' => $data[3],'status' => 'Done','date_completed' => $date_completed]
 				]	
 			);
-			$msgg = "Fasting Blood Sugar (FBS Test / Glucose Test) Result \nResult:".$data[0]."\nFlag:".$data[1]."\nImpression:".$data[2]."\nInterpretation:".$data[3];
+			$msgg = "Your FBS Test / Glucose Test is done\nLog in to this link ".$ip."/symphony/ for the result";
 			$update = $this->db->lab_test->updateOne( 
 				['_id' => new MongoDB\BSON\ObjectId ($data[$c - 1])], 
 				['$set' => 
@@ -866,7 +909,7 @@ class Database
 		$update = $this->db->er_transaction->updateOne( 
 			['_id' => new MongoDB\BSON\ObjectId($data['er_id'])], 
 			['$set' => 
-			['status' => "Discharged",'date_completed' => $date_completed]
+			['status' => $data['status'],'date_completed' => $date_completed]
 		]);
 		return true;
 	}

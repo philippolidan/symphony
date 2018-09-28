@@ -34,6 +34,7 @@
 							<th>Patient Number.</th>
 							<th>Patient Name</th>
 							<th>Birthday</th>
+							<th>Status</th>
 							<th width="10%">Actions</th>
 						</tr>
 					</thead>
@@ -64,16 +65,29 @@
 		"language": {
 			"emptyTable": "No Available Evaluation Request"
 		},
-		"order": [[ 0, "desc" ]]
+		"order": [[ 4, "desc" ]]
 	});
 	$('<div class="float-right col-lg-3 col-md-6">' +
 		'<select class="form-control" id="er_status">'+
+		'<option value="All">All</option>'+
 		'<option value="For Evaluation">For Evaluation</option>'+
 		'<option value="Discharged">Discharged</option>'+
+		'<option value="Admitted">Admitted</option>'+
 		'</select>' + 
 		'</div>').appendTo("#lab_test_table_wrapper .dataTables_filter");
 	$(".dataTables_filter label").addClass("pull-right");
 	$("#er_status").on('change',function(){
+		var val = $(this).val();
+		var table = $("#lab_test_table").DataTable();
+		var col = table.column(4);
+		console.log(val);
+		if(val != "All"){
+			if(col.visible())
+				col.visible( ! col.visible() );
+		}
+		else{
+			col.visible( true);
+		}
 		updateTable();
 	});
 	updateTable();
@@ -85,10 +99,9 @@
 		$.ajax({
 			url:"assets/includes/class_handler.php",
 			type:"POST",
-			data: {id:17,tcount:tcount,status:t},
-			success:function(data){
-				if(data == "true"){
-					console.log(data);
+			data: {id:17,tcount:tcount,status:t,type:2},
+			success: function(data) {
+				if(data == true){
 					updateTable();
 				}
 			}
@@ -100,15 +113,16 @@
 		$.ajax({
 			url:"assets/includes/class_handler.php",
 			type:"POST",
-			data: {id:18,status:t},
+			data: {id:18,status:t,type:2},
 			success:function(data){
 				var table = $('#lab_test_table').DataTable();
 				var data = JSON.parse(data);
 				table.clear().draw();
 				data.forEach(function(d){
 					button = "<button class='btn btn-primary btn-sm' data-target='m_add_evaluation' data-erid ='"+d[4]+"' data-pid='"+d[5]+"' onclick='open_modal(this)' type='button' value='"+d[5]+"'><i class='fas fa-eye'></i></button>";
-					table.row.add([d[0],d[6],d[1],d[2],button]).draw(false);
+					table.row.add([d[0],d[6],d[1],d[2],d[3],button]).draw(false);
 				});
+				console.log(data);
 			}
 		});
 	}
