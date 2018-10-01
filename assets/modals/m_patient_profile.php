@@ -154,13 +154,13 @@
 								</div>
 								<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
 									<div class="row  text-light p-3 mt-2">
-										<div class="bg-info col-lg-4 p-2">
+										<div class="bg-info col-lg-4 col-md-4 col-xs-4 col-sm-4 p-2">
 											<h6 class="small">Laboratory Test</h6>
 										</div>
-										<div class="bg-info col-lg-4 p-2">
+										<div class="bg-info col-lg-4 col-md-4 col-xs-4 col-sm-4 p-2">
 											<h6 class="small">Status</h6>
 										</div>
-										<div class="bg-info col-lg-4 p-2">
+										<div class="bg-info col-lg-4 col-md-4 col-xs-4 col-sm-4 p-2">
 											<h6 class="small float-right">Action</h6>
 										</div>
 									</div>

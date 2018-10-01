@@ -1,6 +1,14 @@
 <?php include('assets/parts/header.php'); include('assets/parts/session_page.php');
 $db = new Database;
 ?>
+<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 mt-4 mb-2">
+	<div class="row">
+		<div class="col-lg-2 col-md-2 col-xs-2 col-sm-2">
+			<a href="doctor_patients.php" class="btn btn-info"><i class="fa fa-home"></i> Back to ER Transactions</a>
+		</div>
+	</div>
+</div>
+
 <div class="col-lg-12">
 	<div class="row">
 

@@ -2,13 +2,9 @@
 $db = new Database;
 $er_id = "5bab3ab0b8dde128480001a9";
 $bill = [];
-foreach($db->getBill($er_id) as $bill){
-	$bill_itemss = [];
-	foreach($bill->bill_items as $bill_items){
-		$bill_itemss[] =[$bill_items->name,$bill_items->price];
-	}
-	$bill = [$bill->total,$bill->discount,$bill->subtotal,$bill_itemss];
+
+foreach($db->loginUser('PN-00001', hash("sha512", "123456")) as $er){
+	var_dump($er);
 }
 
-echo json_encode($bill);
 ?>
