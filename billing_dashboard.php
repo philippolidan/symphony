@@ -1,4 +1,4 @@
-<?php include('assets/parts/header.php'); ?>
+<?php include('assets/parts/header.php');  ?>
 <div class="wrapper">
 
 	<?php include('assets/parts/billing_sidebar.php'); ?>
@@ -83,9 +83,9 @@
 			data: {id:17,tcount:tcount,status:t,type:1},
 			success:function(data){
 				if(data == true){
+					console.log(data);
 					updateTable();
 				}
-				console.log(true);
 			}
 		});
 		setTimeout(check,2000);

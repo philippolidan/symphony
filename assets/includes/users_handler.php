@@ -3,6 +3,7 @@
 include 'db_connect.php';
 $db = new Database;
 
+session_start();
 $response = [];
 
 $user_id = filter_input(INPUT_POST, "id", FILTER_SANITIZE_STRING);
@@ -13,8 +14,6 @@ if (isset($_POST['id']) && isset($_POST['password'])) {
 	if ($result) {
 		
 		json_encode($result);
-
-		session_start();
 
 		$_SESSION['user_id'] = $result['user_id'];
 		$_SESSION['role_id'] = $result['role_id'];

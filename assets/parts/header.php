@@ -1,6 +1,9 @@
 <?php
 include('assets/includes/db_connect.php'); 
-
+$url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+if (strpos($url,'index') == false) {
+	include('assets/parts/session_page.php');
+}
 ?>
 <!DOCTYPE html>
 <html>

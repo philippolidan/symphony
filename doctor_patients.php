@@ -1,4 +1,4 @@
-<?php  include('assets/parts/header.php'); include('assets/parts/session_page.php');
+<?php  include('assets/parts/header.php'); 
 $db = new Database;
 // foreach($db->getPatientERById("5ba35679b8dde11e54001970","5ba35679b8dde11e54001968") as $er){
 // 	foreach($er->patient as $patient){

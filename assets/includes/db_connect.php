@@ -18,10 +18,18 @@ class Database
 	}
 	public function getMedicines(){
 		return $this->db->medicine->find();
-		
 	}
 	public function getPatients(){
 		return $this->db->patient->find();
+	}
+	public function getNotification($role_id){
+		return $this->db->notifications->find(["role_id" => $role_id]);
+	}
+	public function addNotification($role_id,$title,$body){
+		$this->db->notifications->insertOne(["role_id" => $role_id,"title" => $title,"body" => $body]);
+	}
+	public function deleteNotification($id){
+		$deleteResult = $this->db->notifications->deleteOne(['_id' => new MongoDB\BSON\ObjectId($id)]);
 	}
 	public function getPatient($patient_oid){
 		$patient_oid = new MongoDB\BSON\ObjectId($patient_oid);
@@ -506,6 +514,7 @@ class Database
 							"color" => "n/a", "consistency" => "n/a", "pus" => "n/a", "rbc" => "n/a", 
 							"others" => "n/a", "interpretation" => "n/a", "date_completed" => "n/a", "status" => "pending", "labtest_id" => (string)$id
 						];
+						$this->addNotification("6","New Test Request!","ER Number: ER-".$er_no."\nTest: Fecalysis");
 					}
 					else if($data['test'][$count] == 2){// urinalysis
 						$u[] =
@@ -513,30 +522,36 @@ class Database
 							"color" => "n/a", "transparency" => "n/a", "hemoglobin" => "n/a", "hematocrit" => "n/a", 
 							"wbc" => "n/a", "rbc" => "n/a", "pus" => "n/a", "platelet_count" => "n/a", "interpretation" => "n/a", "status" => "pending",  "date_completed" => "n/a","labtest_id" => (string)$id
 						];
+						$this->addNotification("6","New Test Request!","ER Number: ER-".$er_no."\nTest: Urinalysis");
 					}
 					else if($data['test'][$count] == 3){// Kidney, Ureter and Bladder X-ray
 						$kub[] =
 						[
 							"findings" => "n/a", "interpretation" => "n/a","labtest_id" => (string)$id
 						];
+						$this->addNotification("7","New Test Request!","ER Number: ER-".$er_no."\nTest: Kidney, Ureter and Bladder X-ray");
 					}
 					else if($data['test'][$count] == 4){//Chest X-ray
 						$cxray[] =
 						[
 							"findings" => "n/a", "interpretation" => "n/a","labtest_id" => (string)$id
 						];
+
+						$this->addNotification("7","New Test Request!","ER Number: ER-".$er_no."\nTest: Chest X-ray");
 					}
 					else if($data['test'][$count] == 5){//Lungs X-ray
 						$lxray[] =
 						[
 							"findings" => "n/a", "interpretation" => "n/a","labtest_id" => (string)$id
 						];
+						$this->addNotification("7","New Test Request!","ER Number: ER-".$er_no."\nTest: Lungs X-ray");
 					}
 					else if($data['test'][$count] == 6){//Abdomen X-ray
 						$axray[] =
 						[
 							"indication" =>"n/a","comparison" =>"n/a", "findings" => "n/a", "interpretation" => "n/a","labtest_id" => (string)$id
 						];
+						$this->addNotification("7","New Test Request!","ER Number: ER-".$er_no."\nTest: Abdomen X-ray");
 					}
 					else if($data['test'][$count] == 7){//CBC
 						$cbcc[] =
@@ -547,36 +562,42 @@ class Database
 							"immature_granulocytes"=>"n/a","immature_grans"=>"n/a","interpretation"=>"n/a",
 							"labtest_id" => (string)$id
 						];
+						$this->addNotification("7","New Test Request!","ER Number: ER-".$er_no."\nTest: Complete Blood Count (CBC)");
 					}
 					else if($data['test'][$count] == 8){//CT Scan
 						$ct[] =
 						[
 							"indication" =>"n/a","technique" =>"n/a","comparison" =>"n/a", "findings" => "n/a","impression" => "n/a", "interpretation" => "n/a","labtest_id" => (string)$id
 						];
+						$this->addNotification("7","New Test Request!","ER Number: ER-".$er_no."\nTest: CT Scan");
 					}
 					else if($data['test'][$count] == 9){//MRI Scan
 						$mri[] =
 						[
 							"indication" =>"n/a","technique" =>"n/a","comparison" =>"n/a", "findings" => "n/a", "interpretation" => "n/a","labtest_id" => (string)$id
 						];
+						$this->addNotification("7","New Test Request!","ER Number: ER-".$er_no."\nTest: MRI Scan");
 					}
 					else if($data['test'][$count] == 10){//Ultrasound
 						$uts[] =
 						[
 							"body_parts" =>"n/a","impression" =>"n/a","conclusion" =>"n/a", "findings" => "n/a", "interpretation" => "n/a","labtest_id" => (string)$id
 						];
+						$this->addNotification("6","New Test Request!","ER Number: ER-".$er_no."\nTest: Ultrasound");
 					}
 					else if($data['test'][$count] == 11){//Electrocardiogram
 						$ecgg[] =
 						[
 							"impression" =>"n/a","conclusion" =>"n/a", "findings" => "n/a", "interpretation" => "n/a","labtest_id" => (string)$id
 						];
+						$this->addNotification("6","New Test Request!","ER Number: ER-".$er_no."\nTest: Electrocardiogram");
 					}
 					else if($data['test'][$count] == 12){//Fasting Blood Sugar
 						$fbs[] =
 						[
 							"result" => "n/a","flag"=>"n/a","impression" => "n/a","interpretation" => "n/a","labtest_id" => (string)$id
 						];
+						$this->addNotification("6","New Test Request!","ER Number: ER-".$er_no."\nTest: Fasting Blood Sugar (FBS Test / Glucose Test)");
 					}
 					$count++;
 				}

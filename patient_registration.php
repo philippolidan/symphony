@@ -1,4 +1,4 @@
-<?php include('assets/parts/header.php'); include('assets/parts/session_page.php');
+<?php include('assets/parts/header.php'); 
 $db = new Database;
 ?>
 <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 mt-4 mb-2">

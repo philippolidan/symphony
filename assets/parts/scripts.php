@@ -11,7 +11,12 @@
 <script type="text/javascript" src="assets/js/datatables.min.js"></script>
 <script type="text/javascript" src="assets/js/chart.min.js"></script>
 <script type="text/javascript" src="assets/js/pnotify.custom.min.js"></script>
-
+<?php
+	if(isset($_SESSION['role_id']))
+		$role_id = $_SESSION['role_id'];
+	else
+		$role_id = 0;
+?>
 <script type="text/javascript">
 	$.fn.extend({
 		animateCss: function(animationName, callback) {
@@ -45,7 +50,29 @@
 			$('#sidebar').toggleClass('active');
 		});
 	});
-	function notification(){
-		
+	function notification(role_id = 0){
+		console.log(role_id);
+		$.ajax({
+			url:"assets/includes/notification_handler.php",
+			type:"POST",
+			data:{id:1,role_id:role_id},
+			success: function(data){
+				if(data != false){
+		  			var data1= JSON.parse(data);
+		  			if(data1.length > 0){
+		  				new PNotify({
+		  					title: data1[0][0],
+		  					text: data1[0][1],
+		  					type: 'info',
+		  					delay: 4000
+		  				});
+		  			}
+				}
+			}
+		});
+		setTimeout(function(){
+			notification("<?php echo $role_id?>");
+		},2000);
 	}
+	notification("<?php echo $role_id?>");
 </script>
